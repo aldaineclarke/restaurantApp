@@ -35,6 +35,27 @@ function getOne(tableName,id){
         })
     });
 }
+
+/**
+ * @description Queries the database for the record that has the value in the field that was passed.
+ * @param {string} tableName Table name to query 
+ * @param {string} fieldName Field name to query by 
+ * @param {any} value value that will be used to test against
+ * @returns 
+ */
+function getOneByFieldName(tableName,fieldName, value){
+    return new Promise ((resolve, reject)=>{
+        db.query("SELECT * FROM ?? WHERE ?? = ?  ",[tableName,fieldName,value], (error, results,fields)=>{
+            if(error){
+                reject({code: `${error.code}`, message:`${error.message}`})
+            }
+            if(results.length < 0){
+                reject({code: "missing record", message: "There is no record that match this id"})
+            }
+            resolve(results[0]);
+        })
+    });
+}
 /**
  * @description Queries the database for the record that has the id, then updates the record with the data.
  * @param {string} tableName Table name to query
@@ -42,13 +63,31 @@ function getOne(tableName,id){
  * @param {data} userData Data to update the record with. 
  * @returns 
  */
-function update(tableName,id, userData){
+function update(tableName,id, newData){
     return new Promise ((resolve, reject)=>{
-        db.query("UPDATE ?? SET ? WHERE id = ?  ",[tableName,userData,id], (error, results,fields)=>{
+        db.query("UPDATE ?? SET ? WHERE id = ?  ",[tableName,newData,id], (error, results,fields)=>{
             if(error){
                 reject({code: `${error.code}`, message:`${error.message}`})
             }
-            resolve({"message": "User successfully updated"});
+            resolve({"message": "successfully updated"});
+        })
+    });
+}
+/**
+ * @description Queries the database for the record that has the value in the field that was passed then update the record.
+ * @param {string} tableName Table name to query
+ * @param {string} fieldName Field name of the record to Query.
+ * @param {any} value Value of the field to search for in the table.
+ * @param {data} userData Data to update the record with. 
+ * @returns 
+ */
+ function updateByFieldName(tableName,fieldName,value, newData){
+    return new Promise ((resolve, reject)=>{
+        db.query("UPDATE ?? SET ? WHERE ?? = ?  ",[tableName,newData,fieldName,value], (error, results,fields)=>{
+            if(error){
+                reject({code: `${error.code}`, message:`${error.message}`})
+            }
+            resolve({"message": "successfully updated"});
         })
     });
 }
@@ -58,13 +97,13 @@ function update(tableName,id, userData){
  * @param {data} userData Data that will be used to create the record. 
  * @returns 
  */
-function create(tableName, userData){
+function create(tableName, newData){
     return new Promise ((resolve, reject)=>{
-        db.query("INSERT INTO ?? SET ?",[tableName,userData], (error, results,fields)=>{
+        db.query("INSERT INTO ?? SET ?",[tableName,newData], (error, results,fields)=>{
             if(error){
                 reject({code: `${error.code}`, message:`${error.message}`})
             }
-            resolve({"message": "User successfully created"});
+            resolve({"message": "successfully created"});
         })
     });
 }
@@ -81,16 +120,38 @@ function deleteRecord(tableName,id){
             if(error){
                 reject({code: `${error.code}`, message:`${error.message}`})
             }
-            resolve({"message": "User successfully deleted"});
+            resolve({"message": "successfully deleted"});
         })
     });
 }
+
+/**
+ * @description Queries the database for the record that matches the field name and value passed then delete said field.
+ * @param {string} tableName Table name to query
+ * @param {string} fieldName Field name to query
+ * @param {any} value Value to find in the field.
+ * @returns 
+ */
+function deleteRecordByField(tableName,fieldName,value){
+    return new Promise ((resolve, reject)=>{
+        db.query("DELETE FROM ?? WHERE ?? = ?",[tableName,fieldName,value], (error, results,fields)=>{
+            if(error){
+                reject({code: `${error.code}`, message:`${error.message}`})
+            }
+            resolve({"message": "successfully deleted"});
+        })
+    });
+}
+
 
 module.exports = {
     getAll,
     getOne,
     update,
     create,
-    deleteRecord
+    deleteRecord,
+    getOneByFieldName,
+    updateByFieldName,
+    deleteRecordByField
 
 }
