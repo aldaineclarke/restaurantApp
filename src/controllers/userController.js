@@ -1,11 +1,10 @@
-const db = require("../configs/db.config");
-const userService = require("../services/user.service");
+const dbService = require("../services/db.service");
 class UserController{
 
     async getAllUsers(req,res,next) {
         // the double question mark escapes the quotation marks from tableName valuez
         try{
-            const result = await userService.getAll();
+            const result = await dbService.getAll(tableName);
             res.json(result);
         }catch(err){
             res.json(err);
@@ -18,7 +17,7 @@ class UserController{
         let userId = req.params.id;
 
         try{
-            const result = await userService.getOne(userId);
+            const result = await dbService.getOne(tableName,userId);
             res.json(result);
         }catch(err){
             res.json(err);
@@ -35,7 +34,7 @@ class UserController{
             isAdmin: true,
         }
         try{
-            const result = await userService.update(userId, data);
+            const result = await dbService.update(tableName,userId, data);
             res.json(result);
         }catch(err){
             res.json(err);
@@ -58,7 +57,7 @@ class UserController{
         }
 
         try{
-            const result = await userService.create(data);
+            const result = await dbService.create(tableName, data);
             res.json(result);
         }catch(err){
             res.json(err);
@@ -69,7 +68,7 @@ class UserController{
         let userId = req.params.id;
 
         try{
-            const result = await userService.deleteUser(userId);
+            const result = await dbService.deleteRecord(tableName, userId);
             res.json(result);
         }catch(err){
             res.json(err);
