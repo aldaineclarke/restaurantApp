@@ -10,7 +10,7 @@ const db = mysql.createConnection({
 // Connects to the database with the credentials provided.
 db.connect((error)=>{
     if(error) throw error;
-    console.log("database connection established")
+    console.log("database connection established");
 });
 
 module.exports = db;
