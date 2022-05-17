@@ -1,0 +1,23 @@
+<%- include('~header.ejs', {title: "Home"})%>
+    
+    <section>
+        <div class="form-area">
+            <div class="advertisement">
+                <h2>Just some information about the website.</h2>
+            </div>
+            <form action="/users/auth" class="login-form" method="post">
+                <legend>Login</legend>
+                <label>
+                    <span>Username</span>
+                    <input type="text" name="username" placeholder="Username" class="form-control">
+                </label>
+                <label>
+                    <span>Username</span>
+                    <input type="password" name="password" placeholder="Username" class="form-control">
+                </label>
+                <button>Login</button>
+            </form>
+
+        </div>
+    </section>
+<%- include('~footer.ejs')%>
