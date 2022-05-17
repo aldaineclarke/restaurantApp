@@ -1,5 +1,4 @@
 const db = require("../configs/db.config");
-const tableName = process.env.DB_NAME + "." + "users";
 
 /**
  * @description Queries the database for all records then return the result as a promise.
@@ -45,7 +44,7 @@ function getOne(tableName,id){
  */
 function getOneByFieldName(tableName,fieldName, value){
     return new Promise ((resolve, reject)=>{
-        db.query("SELECT * FROM ?? WHERE ?? = ?  ",[tableName,fieldName,value], (error, results,fields)=>{
+        db.query("SELECT * FROM ?? WHERE ?? = ?",[tableName,fieldName,value], (error, results,fields)=>{
             if(error){
                 reject({code: `${error.code}`, message:`${error.message}`})
             }
