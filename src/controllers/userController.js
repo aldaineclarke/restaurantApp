@@ -1,4 +1,6 @@
 const dbService = require("../services/db.service");
+const tableName = process.env.DB_NAME + "."+ "users";
+
 class UserController{
 
     async getAllUsers(req,res,next) {
@@ -41,11 +43,25 @@ class UserController{
         }
     }
 
-    authenticateUser(req,res,next) {
+    async authenticateUser(req,res,next) {
+        let username = req.body.username;
+        let password = req.body.password;
+        console.log(username)
+        let user = await dbService.getOneByFieldName(tableName, "username", username);
+        if(user){
+            req.session.regenerate(()=>{
+                req.session.user = user;
+                res.redirect("/");
+            });
+        }else{
+            res.redirect("/login");
+        }
+
+
 
     }
     
-    async createUser(req,res,next) {
+    async createUser(req,res) {
 
         let data = {
             fname: req.body.fname,
