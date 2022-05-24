@@ -71,25 +71,78 @@
 	<!-- end copyright -->
 	
 	<!-- jquery -->
-	<script src="assets/js/jquery-1.11.3.min.js"></script>
+	<script src="/assets/js/jquery-1.11.3.min.js"></script>
 	<!-- bootstrap -->
-	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
 	<!-- count down -->
-	<script src="assets/js/jquery.countdown.js"></script>
+	<script src="/assets/js/jquery.countdown.js"></script>
 	<!-- isotope -->
-	<script src="assets/js/jquery.isotope-3.0.6.min.js"></script>
+	<script src="/assets/js/jquery.isotope-3.0.6.min.js"></script>
 	<!-- waypoints -->
-	<script src="assets/js/waypoints.js"></script>
+	<script src="/assets/js/waypoints.js"></script>
 	<!-- owl carousel -->
-	<script src="assets/js/owl.carousel.min.js"></script>
+	<script src="/assets/js/owl.carousel.min.js"></script>
 	<!-- magnific popup -->
-	<script src="assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="/assets/js/jquery.magnific-popup.min.js"></script>
 	<!-- mean menu -->
-	<script src="assets/js/jquery.meanmenu.min.js"></script>
+	<script src="/assets/js/jquery.meanmenu.min.js"></script>
 	<!-- sticker js -->
-	<script src="assets/js/sticker.js"></script>
+	<script src="/assets/js/sticker.js"></script>
 	<!-- main js -->
-	<script src="assets/js/main.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script>
+		let cart = [];
+		let order_item;
+
+		let buttons = document.querySelectorAll(".cart-btn");
+		buttons.forEach((button)=>{
+			button.addEventListener("click",(event)=>{
+			let product	= JSON.parse(button.getAttribute("data-product"));
+			addToCart(product);
+			})
+		})
+		if(!localStorage.getItem("cart")){
+			localStorage.setItem("cart",JSON.stringify(cart))
+		}
+		function addToCart(product,quantity){
+			cart = JSON.parse(localStorage.getItem("cart"));
+			if(cart.filter((item)=> item.product.item == product.item).length == 0){
+				order_item = {
+				product,
+				quantity: 1 || quantity
+			}
+			cart.push(order_item);
+			}
+
+			localStorage.setItem("cart", JSON.stringify(cart));
+		}
+
+		function submitOrder(){
+
+			let email = document.querySelector("#email");
+			if(email.value){
+				fetch("/orders/add",
+			{method: 'POST',
+			headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+					},
+			body : JSON.stringify({
+					cart: localStorage.getItem("cart"), 	
+					email:email.value
+					})
+			}
+			).then(()=>{
+				// window.location.href = "/products"
+			})
+
+			// localStorage.removeItem("cart")
+			
+			}	
+		}
+
+		
+	</script>
 
 </body>
 </html>

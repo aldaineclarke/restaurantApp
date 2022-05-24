@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
+						<p>You are only a few steps away</p>
 						<h1>Cart</h1>
 					</div>
 				</div>
@@ -32,31 +32,8 @@
 									<th class="product-total">Total</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="assets/img/products/product-img-1.jpg" alt=""></td>
-									<td class="product-name">Strawberry</td>
-									<td class="product-price">$85</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="assets/img/products/product-img-2.jpg" alt=""></td>
-									<td class="product-name">Berry</td>
-									<td class="product-price">$70</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="assets/img/products/product-img-3.jpg" alt=""></td>
-									<td class="product-name">Lemon</td>
-									<td class="product-price">$35</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
+							<tbody class="table-cart">
+								
 							</tbody>
 						</table>
 					</div>
@@ -70,25 +47,32 @@
 									<th>Total</th>
 									<th>Price</th>
 								</tr>
-							</thead>
+							</thead
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
+									<td class="subTotal">
+										<span class="sign">$</span>
+										<span class="dataValue">
+										500</span></td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Shipping: </strong></td>
-									<td>$45</td>
+									<td class="shipping">
+										<span class="sign">$</span><span class="dataValue">5</span></td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>$545</td>
+									<td>
+										<span class="sign">$</span>
+										<span class="dataValue"></span>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="cart-buttons">
 							<a href="cart.html" class="boxed-btn">Update Cart</a>
-							<a href="checkout.html" class="boxed-btn black">Check Out</a>
+							<a onclick="checkCartAndUser()" class="boxed-btn black">Check Out</a>
 						</div>
 					</div>
 
@@ -134,5 +118,106 @@
 		</div>
 	</div>
 	<!-- end logo carousel -->
+	<script>
+		let tableBody = document.querySelector(".table-cart");
+		let cartTable = document.querySelector(".cart-table");
+		let row = document.createElement("tr");
+		
+		let cartInfo = JSON.parse(localStorage.getItem("cart"));
+		window.onload = addTotal();
+		cartInfo.forEach((item, index)=>{
+			let row = document.createElement("tr");
+			row.classList.add("table-body-row");
+			row.setAttribute("data-row-id",index+1);
+
+			
+			let rmData = document.createElement("td");
+			rmData.classList.add("product-remove");
+			rmData.innerHTML=`<a onclick="removeFromCart('${item.product.item}')"><i class="far fa-window-close"></i></a>`;
+			
+
+			let imgData = document.createElement("td");
+			imgData.classList.add("product-image");
+			imgData.innerHTML=`<img src="/IMG/${item.product.prod_img}" alt="this image is of a product"/>`;
+
+			let nameData = document.createElement("td");
+			nameData.classList.add("product-name");
+			nameData.innerText=item.product.item;
+
+			let priceData = document.createElement("td");
+			priceData.classList.add("product-price");
+			priceData.innerText=`$ ${item.product.price}`;
+
+			let qtyData = document.createElement("td");
+			qtyData.classList.add("product-quantity");
+			qtyData.innerHTML=`<input type="number" value="${item.quantity}" oninput="calculateQty(this, ${item.product.price})"/>`;
+
+			let totData = document.createElement("td");
+			totData.classList.add("product-total");
+			totData.innerText=`$ ${item.quantity * item.product.price}`;
+
+			row.append(rmData,imgData,nameData,priceData, qtyData, totData);
+
+			tableBody.appendChild(row);
+
+		})
+		function calculateQty(quantity, price){
+			let productRow = quantity.parentElement.parentElement;
+			if(quantity.value < 1){
+				if(!confirm("Are you sure you want to remove this item from the cart")){
+					quantity.value = 1;
+				}
+				removeFromCart(productRow.querySelector(".product-name").innerText.trim());
+				cartInfo = JSON.parse(localStorage.getItem("cart"));
+				tableBody.querySelectorAll("tr").forEach((row)=>{
+					if(row.getAttribute("data-row-id") == productRow.getAttribute("data-row-id")){
+						cartTable.deleteRow(row.getAttribute("data-row-id"))
+					}
+				})
+				
+			
+			}
+			// Increase quantity
+			cartInfo.forEach((item)=>{
+				if(item.product.item == productRow.querySelector(".product-name").innerText.trim()){
+					item.quantity = parseInt(quantity.value);
+				}
+				
+			})
+			localStorage.setItem("cart",JSON.stringify(cartInfo))
+			productRow.querySelector(".product-total").innerText = `$ ${quantity.value * price}`;
+			addTotal();
+
+		}
+		function removeFromCart(name){
+			let cart = JSON.parse(localStorage.getItem("cart"))
+
+
+			cart = cart.filter((item)=> !(item.product.item == name));
+			localStorage.setItem("cart",JSON.stringify(cart))
+
+		}
+		function addTotal(){
+			let result = 0;
+				let cartCheck = JSON.parse(localStorage.getItem("cart"));
+				cartCheck.forEach((item)=>{
+					result += item.product.price * item.quantity;
+				})
+			
+			
+
+			document.querySelector(".subTotal .dataValue").innerText = result
+			
+		} 
+		function checkCartAndUser(){
+			if(JSON.parse(localStorage.getItem("cart")).length == 0){
+				if(confirm("Cart is currently empty, did you mean to add items to the cart?")){
+					window.location.href="/products"
+				}
+				return false
+			}
+			window.location.href="/checkout";
+		}
+	</script>
 
 <%- include("~footer.ejs") %>

@@ -5,8 +5,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
-						<h1>Shop</h1>
+						<p>Colorful delicacies to sooth your taste buds</p>
+						<h1>Menus</h1>
 					</div>
 				</div>
 			</div>
@@ -33,57 +33,23 @@
 
 			<div class="row product-lists">
 				<% products.forEach((product)=> { %>
-				<div class="col-lg-4 col-md-6 text-center berry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt=""></a>
+
+					<div class="col-lg-4 col-md-6 text-center berry" title="<%=product.item %>">
+						
+						<div class="single-product-item">
+							<a href="/products/<%=product.item_id %>" class="stretched-link"></a>
+							<div class="product-image">
+								<a href="single-product.html"><img src="IMG/<%= product.prod_img%>" alt=""></a>
+							</div>
+							<h3><%= (product.item.length > 24) ? product.item.slice(0,22)+ " ...": product.item %></h3>
+							<p class="product-price"><span>Per Serving</span>$ <%= product.price %> </p>
+							<a data-product = "<%= JSON.stringify(product) %>" onclick=""class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Order</a>
+						
 						</div>
-						<h3><%= product.item %></h3>
-						<p class="product-price"><span>Per Serving</span>$ <%= product.price %> </p>
-						<a href="cart/checkout" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Order</a>
+						
 					</div>
-				</div>
 				<% }) %>
-				<!-- <div class="col-lg-4 col-md-6 text-center lemon">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt=""></a>
-						</div>
-						<h3>Lemon</h3>
-						<p class="product-price"><span>Per Kg</span> 35$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-4.jpg" alt=""></a>
-						</div>
-						<h3>Avocado</h3>
-						<p class="product-price"><span>Per Kg</span> 50$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-5.jpg" alt=""></a>
-						</div>
-						<h3>Green Apple</h3>
-						<p class="product-price"><span>Per Kg</span> 45$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="single-product.html"><img src="assets/img/products/product-img-6.jpg" alt=""></a>
-						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> 80$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div> -->
+				   
 			</div>
 
 			<div class="row">
