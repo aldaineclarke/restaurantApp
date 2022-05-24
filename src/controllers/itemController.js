@@ -13,15 +13,22 @@ class ItemController{
            console.log(err)
        }
     }
-    getSingleItem(req, res, next){}
+    async getSingleItem(req, res, next){
+        console.log(req.params.id)
+        try{
+            let product = await dbService.getOneByFieldName(tableName,"item_id",req.params.id);
+            res.render("single-product", {product});
+           }catch(err){
+               console.log(err)
+           }
+    }
     createItem(req, res, next){}
     updateItem(req, res, next){}
-    createOrderItem(req, res, next){
         // try{
             
         //     await dbService.create(tableName,)
         // }
-    }
+
     // getAllItems(req, res, next){}
     // getAllItems(req, res, next){}
     // getAllItems(req, res, next){}

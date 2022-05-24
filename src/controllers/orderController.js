@@ -42,16 +42,23 @@ class OrderController{
 
     }
     async createOrder(req, res, next){
+        let order_num = orderNumberGenerator();
+        let total = 0;
+        console.log()
+        for(let item of JSON.parse(req.body.cart)){
+            await createOrderItem(item.product.item_id, order_num, item.quantity);
+            total+= (item.quantity * item.product.price);
+        }
         let data = {
-            order_num: orderNumberGenerator(),
-            customer_id: req.body.cid,
+            order_num: order_num,
+            customer_email:req.body.email ,//will change to the email 
             status: "pending",
             date_created: new Date(),
-            total_price: req.body.total_price,
+            total_price: total,
         }
         try{
-            const result = await dbService.create(tableName, data);
-            res.json(result);
+            console.log(total)
+            await dbService.create(tableName, data);
         }catch(err){
             res.json(err);
         }
@@ -66,6 +73,12 @@ class OrderController{
             res.json(err);
         }
     }
+    
+
+   
+}
+async function createOrderItem(productID, orderNum, quantity){
+    await dbService.create(process.env.DB_NAME + "."+ "orderItems", {item_id: productID, order_id: orderNum, quantity:quantity});
 }
 
 function orderNumberGenerator(){
