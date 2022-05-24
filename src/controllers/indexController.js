@@ -1,3 +1,4 @@
+
 class IndexController {
 
     constructor(){}
@@ -16,12 +17,13 @@ class IndexController {
     getContactPage(req, res){
          res.render("contact");
      }
-    getShopPage(req, res){
-         res.render("shop");
-     }
+
     getCartPage(req, res){
          res.render("cart");
      }
+     getCheckoutPage(req, res){
+        res.render("checkout");
+    }
      
 }
 

@@ -9,6 +9,7 @@ router.get("/about", indexController.getAboutPage);
 router.get("/news", indexController.getNewsPage);
 router.get("/contact", indexController.getContactPage);
 router.get("/cart", indexController.getCartPage);
+router.get("/checkout", indexController.getCheckoutPage);
 
 
 
