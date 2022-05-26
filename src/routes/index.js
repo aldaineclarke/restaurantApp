@@ -5,6 +5,7 @@ const authGuard = require("../middlewares/auth");
 router.get("/", indexController.getHomePage);
 
 router.get("/login", indexController.getLoginPage);
+router.get("/logout", indexController.logoutUser);
 router.get("/about", indexController.getAboutPage);
 router.get("/news", indexController.getNewsPage);
 router.get("/contact", indexController.getContactPage);
