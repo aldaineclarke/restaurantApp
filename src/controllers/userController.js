@@ -44,14 +44,14 @@ class UserController{
     }
 
     async authenticateUser(req,res,next) {
-        let username = req.body.username;
+        let email = req.body.email;
         let password = req.body.password;
-        console.log(username)
-        let user = await dbService.getOneByFieldName(tableName, "username", username);
-        if(user){
+        let user = await dbService.getOneByFieldName(tableName, "email", email);
+        if(user && password == user.password){
+            
             req.session.regenerate(()=>{
                 req.session.user = user;
-                res.redirect("/");
+                res.redirect("/orders/dashboard");
             });
         }else{
             res.redirect("/login");
@@ -60,6 +60,7 @@ class UserController{
 
 
     }
+    
     
     async createUser(req,res) {
 

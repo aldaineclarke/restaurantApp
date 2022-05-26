@@ -11,7 +11,7 @@ class OrderController{
     async getAllOrders(req, res, next){
         try{
             const result = await dbService.getAll(tableName);
-            res.json(result);
+            res.render("dashboard",{user: req.session.user, orders:result})
         }catch(err){
             res.json(err);
         }

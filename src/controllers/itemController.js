@@ -8,7 +8,7 @@ class ItemController{
         
        try{
         let products = await dbService.getAll(tableName);
-        res.render("product", {products});
+        res.render("product", {title: "menu",products});
        }catch(err){
            console.log(err)
        }
@@ -17,7 +17,7 @@ class ItemController{
         console.log(req.params.id)
         try{
             let product = await dbService.getOneByFieldName(tableName,"item_id",req.params.id);
-            res.render("single-product", {product});
+            res.render("single-product", {product, title:"product-detail"});
            }catch(err){
                console.log(err)
            }

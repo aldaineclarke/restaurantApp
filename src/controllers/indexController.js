@@ -3,27 +3,32 @@ class IndexController {
 
     constructor(){}
     getHomePage(req, res) {
-        res.render('index');
+        res.render('index',{title:"home"});
      }
     getLoginPage(req, res) {
-        res.render("login");
+        res.render("login",{title:"login"});
      }
     getAboutPage(req, res){
-         res.render("about");
+         res.render("about",{title:"about"});
      }
     getNewsPage(req, res){
-         res.render("news");
+         res.render("news",{title:"news"});
      }
     getContactPage(req, res){
-         res.render("contact");
+         res.render("contact",{title:"contact"});
      }
 
     getCartPage(req, res){
-         res.render("cart");
+         res.render("cart",{title:"cart"});
      }
      getCheckoutPage(req, res){
-        res.render("checkout");
+        res.render("checkout",{title:"checkout"});
     }
+    logoutUser(req,res){
+        delete req.session;
+        res.redirect("/login");
+    }
+
      
 }
 
