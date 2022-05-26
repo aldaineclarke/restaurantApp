@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>Fruitkha</title>
+
+	<!-- favicon -->
+	<link rel="icon" type="image/png" href="/static/IMG/favicon.ico">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="/assets/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="/assets/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="/assets/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="/assets/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="/assets/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+</head>
+<body>
+	
+	<!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+	
+	<!-- header -->
+	<div class="top-header-area" id="sticker">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-sm-12 text-center">
+					<div class="main-menu-wrap">
+						<!-- logo -->
+						<div class="site-logo">
+							<a href="/">
+								<img src="/assets/img/logo.png" alt="">
+							</a>
+						</div>
+						<!-- logo -->
+
+						<!-- menu start -->
+						<nav class="main-menu ml-auto">
+							<ul>
+                                <li class="user">
+                                    <i class="fa fa-user-circle icon"></i>
+                                    <span class="text-uppercase"><%= user.fname%></span>
+                                    <ul class="sub-menu">
+										<li><a href="/logout">Logout</a></li>
+									</ul>
+                                </li>
+							</ul>
+						</nav>
+						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<div class="mobile-menu"></div>
+						<!-- menu end -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end header -->
+
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>These are the orders made</p>
+						<h1>Dashboard</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- Dashboard section -->
+    
+    <!-- Extracted -->
+    <div class="cart-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="cart-table-wrap">
+						<table class="order-table">
+                            <thead class="order-table-head">
+                                <tr class="table-head-row">
+                                    <th class="">Order Number</th>
+                                    <th class="">Customer</th>
+                                    <th class="">Order Status</th>
+                                    <th class="">Order Date</th>
+                                    <th class="">Order Total</th>
+                                    <th class="">Update Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% orders.forEach((order)=>{%>
+                                <tr class="table-body-row">
+                                    <td class=""><%= order.order_num%></td>
+                                    <td class=""><%= order.customer_email%></td>
+                                    <td class=""><%= order.status%></td>
+                                    <td class=""><%= new Date(order.date_created).toLocaleString().slice(0,10)%></td>
+                                    <td class="">$<%= order.total_price%></td>
+                                    <td class="">
+                                        <form action="/orders/dashboard/<%= order.id%>" method="POST">
+                                            <select>
+                                                <option value="pending">Pending</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="missing">Missing</option>
+                                            </select>
+                                            <button type="submit">Update</button>
+                                        
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% })%>
+                            </tbody>
+                        </table>
+					</div>
+				</div>
+
+				
+			</div>
+		</div>
+	</div>
+    <!-- Extracted -->
+
+
+    
+	<!-- end Dashboard section -->
+
+	<%- include("~footer.ejs")%>
