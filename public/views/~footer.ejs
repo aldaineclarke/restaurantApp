@@ -93,6 +93,8 @@
 	<script>
 		let cart = [];
 		let order_item;
+		let cartLength = document.querySelector(".cart-badge");
+
 
 		let buttons = document.querySelectorAll(".cart-btn");
 		buttons.forEach((button)=>{
@@ -103,7 +105,10 @@
 		})
 		if(!localStorage.getItem("cart")){
 			localStorage.setItem("cart",JSON.stringify(cart))
+			
 		}
+
+		calculateCartCount(JSON.parse(localStorage.getItem("cart")));
 		function addToCart(product,quantity){
 			cart = JSON.parse(localStorage.getItem("cart"));
 			if(cart.filter((item)=> item.product.item == product.item).length == 0){
@@ -114,7 +119,16 @@
 			cart.push(order_item);
 			}
 
+			calculateCartCount(cart);
+
 			localStorage.setItem("cart", JSON.stringify(cart));
+		}
+		function calculateCartCount(cart){
+			let total = 0;
+			cart.forEach((item)=>{
+				total += item.quantity
+			});
+			cartLength.innerText = total;
 		}
 
 		function submitOrder(){

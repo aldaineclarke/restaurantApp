@@ -91,35 +91,33 @@
 								</tr>
 							</thead>
 							<tbody class="order-details-body">
-								<tr>
+								<tr class="sub-header">
 									<td>Product</td>
 									<td>Total</td>
 								</tr>
-								<tr>
-									<td>Strawberry</td>
-									<td>$85.00</td>
-								</tr>
-								<tr>
-									<td>Berry</td>
-									<td>$70.00</td>
-								</tr>
-								<tr>
-									<td>Lemon</td>
-									<td>$35.00</td>
-								</tr>
+								
 							</tbody>
 							<tbody class="checkout-details">
 								<tr>
-									<td>Subtotal</td>
-									<td>$190</td>
+									<td>Sub Total</td>
+									<td class="subTotal">
+										<span class="sign">$</span>
+										<span class="dataValue">
+										0</span></td>
 								</tr>
 								<tr>
-									<td>Shipping</td>
-									<td>$50</td>
+									<td>Shipping: </td>
+									<td class="shipping">
+										<span class="sign">$</span>
+										<span class="dataValue">
+										0</span></td>
 								</tr>
 								<tr>
-									<td>Total</td>
-									<td>$240</td>
+									<td>Total: </td>
+									<td class="finalVal">
+										<span class="sign">$</span>
+										<span class="dataValue">
+										0</span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -130,5 +128,24 @@
 		</div>
 	</div>
 	<!-- end check out section -->
+	<script>
+		let cart = JSON.parse(localStorage.getItem("cart"));
+		let tableBody = document.querySelector(".order-details-body");
+		let total = 0
+		cart.forEach((item)=>{
+			let row = document.createElement("tr");
+			let productData = document.createElement("td");
+			productData.innerText = item.product.item;
+			let priceData = document.createElement("td");
+			priceData.innerText = `$${item.quantity * item.product.price}`;
+			row.append(productData, priceData);
+			tableBody.appendChild(row);
+			total += item.product.price * item.quantity
+
+		})
+		document.querySelector(".subTotal .dataValue").innerText = total
+
+		
+	</script>
 
 	<%- include("~footer.ejs")%>

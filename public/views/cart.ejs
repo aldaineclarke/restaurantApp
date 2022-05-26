@@ -59,30 +59,19 @@
 								<tr class="total-data">
 									<td><strong>Shipping: </strong></td>
 									<td class="shipping">
-										<span class="sign">$</span><span class="dataValue">5</span></td>
+										<span class="sign">$</span><span class="dataValue">0</span></td>
 								</tr>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>
+									<td class="finalVal">
 										<span class="sign">$</span>
-										<span class="dataValue"></span>
+										<span class="dataValue">0</span>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 						<div class="cart-buttons">
-							<a href="cart.html" class="boxed-btn">Update Cart</a>
-							<a onclick="checkCartAndUser()" class="boxed-btn black">Check Out</a>
-						</div>
-					</div>
-
-					<div class="coupon-section">
-						<h3>Apply Coupon</h3>
-						<div class="coupon-form-wrap">
-							<form action="index.html">
-								<p><input type="text" placeholder="Coupon"></p>
-								<p><input type="submit" value="Apply"></p>
-							</form>
+							<a onclick="checkCartAndUser()" class="boxed-btn black">Proceed to Checkout</a>
 						</div>
 					</div>
 				</div>
@@ -168,7 +157,9 @@
 					quantity.value = 1;
 				}
 				removeFromCart(productRow.querySelector(".product-name").innerText.trim());
+				
 				cartInfo = JSON.parse(localStorage.getItem("cart"));
+				
 				tableBody.querySelectorAll("tr").forEach((row)=>{
 					if(row.getAttribute("data-row-id") == productRow.getAttribute("data-row-id")){
 						cartTable.deleteRow(row.getAttribute("data-row-id"))
@@ -186,6 +177,7 @@
 			})
 			localStorage.setItem("cart",JSON.stringify(cartInfo))
 			productRow.querySelector(".product-total").innerText = `$ ${quantity.value * price}`;
+			calculateCartCount(cartInfo)
 			addTotal();
 
 		}
@@ -205,8 +197,11 @@
 				})
 			
 			
-
+			document.querySelector(".shipping .dataValue ").innerText = 0;
+	
 			document.querySelector(".subTotal .dataValue").innerText = result
+
+			document.querySelector(".finalVal .dataValue").innerText = result + parseInt(document.querySelector(".shipping .dataValue ").innerText);
 			
 		} 
 		function checkCartAndUser(){
